@@ -405,7 +405,7 @@ class SearchSpider(scrapy.Spider):
                     './/a[@action-type="feed_list_forward"]/text()').extract()
                 reposts_count = "".join(reposts_count)
                 try:
-                    reposts_count = re.findall(r'\d+.*', reposts_count)
+                    reposts_count = re.findall(r'\d+.*', str(reposts_count))
                 except TypeError:
                     print(
                         "无法解析转发按钮，可能是 1) 网页布局有改动 2) cookie无效或已过期。\n"
@@ -417,12 +417,12 @@ class SearchSpider(scrapy.Spider):
                 comments_count = sel.xpath(
                     './/a[@action-type="feed_list_comment"]/text()'
                 ).extract_first()
-                comments_count = re.findall(r'\d+.*', comments_count)
+                comments_count = re.findall(r'\d+.*', str(comments_count))
                 weibo['comments_count'] = comments_count[
                     0] if comments_count else '0'
                 attitudes_count = sel.xpath(
                     '(.//span[@class="woo-like-count"])[last()]/text()').extract_first()
-                attitudes_count = re.findall(r'\d+.*', attitudes_count)
+                attitudes_count = re.findall(r'\d+.*', str(attitudes_count))
                 weibo['attitudes_count'] = attitudes_count[
                     0] if attitudes_count else '0'
                 created_at = sel.xpath(
@@ -446,7 +446,7 @@ class SearchSpider(scrapy.Spider):
                 is_exist_video = sel.xpath(
                     './/div[@class="thumbnail"]//video-player').extract_first()
                 if is_exist_video:
-                    video_url = re.findall(r'src:\'(.*?)\'', is_exist_video)[0]
+                    video_url = re.findall(r'src:\'(.*?)\'', str(is_exist_video))[0]
                     video_url = video_url.replace('&amp;', '&')
                     video_url = 'http:' + video_url
                 if not retweet_sel:
@@ -490,19 +490,19 @@ class SearchSpider(scrapy.Spider):
                     reposts_count = retweet_sel[0].xpath(
                         './/ul[@class="act s-fr"]/li[1]/a[1]/text()'
                     ).extract_first()
-                    reposts_count = re.findall(r'\d+.*', reposts_count)
+                    reposts_count = re.findall(r'\d+.*', str(reposts_count))
                     retweet['reposts_count'] = reposts_count[
                         0] if reposts_count else '0'
                     comments_count = retweet_sel[0].xpath(
                         './/ul[@class="act s-fr"]/li[2]/a[1]/text()'
                     ).extract_first()
-                    comments_count = re.findall(r'\d+.*', comments_count)
+                    comments_count = re.findall(r'\d+.*', str(comments_count))
                     retweet['comments_count'] = comments_count[
                         0] if comments_count else '0'
                     attitudes_count = retweet_sel[0].xpath(
                         './/a[@class="woo-box-flex woo-box-alignCenter woo-box-justifyCenter"]//span[@class="woo-like-count"]/text()'
                     ).extract_first()
-                    attitudes_count = re.findall(r'\d+.*', attitudes_count)
+                    attitudes_count = re.findall(r'\d+.*', str(attitudes_count))
                     retweet['attitudes_count'] = attitudes_count[
                         0] if attitudes_count else '0'
                     created_at = retweet_sel[0].xpath(
