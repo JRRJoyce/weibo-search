@@ -421,8 +421,8 @@ class SearchSpider(scrapy.Spider):
                 weibo['comments_count'] = comments_count[
                     0] if comments_count else '0'
                 attitudes_count = sel.xpath(
-                    '(.//span[@class="woo-like-count"])[last()]/text()').extract_first()
-                attitudes_count = re.findall(r'\d+.*', str(attitudes_count))
+                    './/a[@action-type="feed_list_like"]/button/span[2]/text()').extract_first()
+                attitudes_count = re.findall(r'\d+.*', attitudes_count)
                 weibo['attitudes_count'] = attitudes_count[
                     0] if attitudes_count else '0'
                 created_at = sel.xpath(
